@@ -1,0 +1,35 @@
+# use postegres/exemple user/password credentials
+version: '3'
+
+services:
+  db-postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+    ports:
+      - "5432:5432"
+    volumes:
+      - /home/wingly/Desenvolvimento/Docker-Compose/PostgreSQL:/var/lib/postgresql/data
+    networks:
+      - postgres-compose-network
+
+  teste-pgadmin-compose:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "wingly.dev@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin1234"
+    ports:
+      - "16543:80"
+    depends_on:
+      - db-postgres
+    networks:
+      - postgres-compose-network
+
+
+networks:
+  postgres-compose-network:
+    driver: bridge
+
+
